@@ -23,20 +23,49 @@ nav ul {
     display: flex;
     justify-content: center;
     list-style: none;
-    gap: 20px;
+    gap: 30px;
 }
 
-nav a {
+nav li {
+    position: relative;
+}
+
+nav a, nav button#logout-btn {
     color: white;
     text-decoration: none;
     font-weight: 700;
-    padding: 10px 20px;
-    transition: background 0.3s;
+    padding: 8px 16px;
+    transition: background 0.3s, transform 0.2s;
+    border-radius: 5px;
+    font-size: 16px;
+    display: inline-block;
+    border: none;
+    background: none;
+    cursor: pointer;
 }
 
-nav a:hover {
+nav a:hover, nav button#logout-btn:hover {
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
+    transform: scale(1.05);
+}
+
+nav button#logout-btn {
+    color: #dc2626; /* Crvena boja za logout dugme */
+}
+
+nav button#logout-btn:hover {
+    background: rgba(185, 28, 28, 0.2); /* Crveni hover efekat */
+}
+
+nav li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .container {
@@ -65,12 +94,13 @@ h1 {
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.7s ease-in-out, box-shadow 0.7s ease-in-out, opacity 0.7s ease-in-out;
 }
 
 .event-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    opacity: 0.95;
 }
 
 .event-card h3 {
@@ -130,15 +160,6 @@ button:hover {
     transform: scale(1.05);
 }
 
-#logout-btn {
-    background: linear-gradient(to right, #ef4444, #b91c1c);
-}
-
-#logout-btn:hover {
-    background: linear-gradient(to right, #b91c1c, #ef4444);
-}
-
-/* Modal stilovi */
 .modal {
     display: none;
     position: fixed;
@@ -168,12 +189,15 @@ button:hover {
     padding: 10px 20px;
 }
 
-/* Responzivnost */
 @media (max-width: 768px) {
     nav ul {
         flex-direction: column;
         text-align: center;
-        gap: 10px;
+        gap: 15px;
+    }
+
+    nav li:not(:last-child)::after {
+        display: none;
     }
 
     .container {

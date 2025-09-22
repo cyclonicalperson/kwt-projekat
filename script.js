@@ -84,7 +84,7 @@ function displayEvents(events) {
             eventList.appendChild(card);
             setTimeout(() => {
                 card.style.opacity = '1';
-            }, index * 100); // Postepeni fade-in
+            }, index * 100);
         });
     }
 }
@@ -167,19 +167,45 @@ function displayReservations() {
     }
 }
 
+// Dinamičko upravljanje navigacijom
+function updateNavigation() {
+    const nav = document.querySelector('nav ul');
+    if (nav) {
+        // Ukloni postojeće login/logout stavke (i staro dugme iz HTML-a)
+        const existingAuth = document.querySelector('#auth-nav');
+        if (existingAuth) {
+            existingAuth.remove();
+        }
+
+        // Ukloni i poslednji li element koji sadrži login link iz HTML-a
+        const lastNavItem = nav.querySelector('li:last-child');
+        if (lastNavItem && (lastNavItem.textContent.includes('Login') || lastNavItem.textContent.includes('Logout'))) {
+            lastNavItem.remove();
+        }
+
+        // Dodaj odgovarajuću stavku na osnovu stanja logina
+        const authLi = document.createElement('li');
+        authLi.id = 'auth-nav';
+        if (isLoggedIn()) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.id = 'logout-btn';
+            logoutBtn.textContent = 'Logout';
+            logoutBtn.onclick = logout;
+            authLi.appendChild(logoutBtn);
+        } else {
+            const loginLink = document.createElement('a');
+            loginLink.href = 'login.html';
+            loginLink.textContent = 'Login';
+            authLi.appendChild(loginLink);
+        }
+        nav.appendChild(authLi);
+    }
+}
+
 // Inicijalizacija po strani
 document.addEventListener('DOMContentLoaded', () => {
-    // Dinamički dodaj logout dugme ako je ulogovan
-    const nav = document.querySelector('nav ul');
-    if (nav && isLoggedIn()) {
-        const logoutLi = document.createElement('li');
-        const logoutBtn = document.createElement('button');
-        logoutBtn.id = 'logout-btn';
-        logoutBtn.textContent = 'Logout';
-        logoutBtn.onclick = logout;
-        logoutLi.appendChild(logoutBtn);
-        nav.appendChild(logoutLi);
-    }
+    // Ažuriraj navigaciju na početku
+    updateNavigation();
 
     // Po strani
     if (document.getElementById('event-list')) {
