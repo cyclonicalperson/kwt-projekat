@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Koncert Rok Benda",
+    "date": "2025-10-15",
+    "location": "Beograd Arena",
+    "price": 2000,
+    "availableTickets": 100
+  },
+  {
+    "id": 2,
+    "name": "Pozorišna Predstava",
+    "date": "2025-11-05",
+    "location": "Narodno Pozorište",
+    "price": 1500,
+    "availableTickets": 50
+  },
+  {
+    "id": 3,
+    "name": "Fudbalska Utakmica",
+    "date": "2025-12-01",
+    "location": "Stadion Rajko Mitić",
+    "price": 1000,
+    "availableTickets": 200
+  }
+]
