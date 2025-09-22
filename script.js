@@ -57,8 +57,15 @@ function loadEvents(callback) {
             const events = JSON.parse(xhr.responseText);
             callback(events);
         } else {
-            showModal('Greška pri učitavanju događaja!');
+            // Fallback na mock podatke ako events.json nije dostupan
+            console.warn('events.json nije dostupan, koriste se mock podaci');
+            callback(eventsData);
         }
+    };
+    xhr.onerror = function() {
+        // Fallback na mock podatke u slučaju greške
+        console.warn('AJAX greška, koriste se mock podaci');
+        callback(eventsData);
     };
     xhr.send();
 }
@@ -74,19 +81,40 @@ function displayEvents(events) {
             card.style.opacity = '0';
             card.style.transition = 'opacity 0.5s ease';
             card.innerHTML = `
-        <h3>${event.name}</h3>
-        <p>Datum: ${event.date}</p>
-        <p>Lokacija: ${event.location}</p>
-        <p>Cena: ${event.price} RSD</p>
-        <p>Dostupno ulaznica: ${event.availableTickets}</p>
-        <a href="event-details.html?id=${event.id}">Detalji</a>
-      `;
+                <div class="event-image">
+                    <img src="${event.image}" alt="${event.name}" loading="lazy">
+                    <div class="event-category">${event.category}</div>
+                </div>
+                <div class="event-content">
+                    <h3>${event.name}</h3>
+                    <p class="event-description">${event.description}</p>
+                    <div class="event-details">
+                        <p><i class="icon-calendar"></i> ${formatDate(event.date)}</p>
+                        <p><i class="icon-location"></i> ${event.location}</p>
+                        <p class="price"><i class="icon-money"></i> ${event.price} RSD</p>
+                        <p class="tickets"><i class="icon-ticket"></i> ${event.availableTickets} dostupno</p>
+                    </div>
+                    <a href="event-details.html?id=${event.id}" class="btn-primary">Detalji</a>
+                </div>
+            `;
             eventList.appendChild(card);
             setTimeout(() => {
                 card.style.opacity = '1';
             }, index * 100);
         });
     }
+}
+
+// Funkcija za formatiranje datuma
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+    };
+    return date.toLocaleDateString('sr-RS', options);
 }
 
 // Dohvati event ID iz URL-a
@@ -104,13 +132,24 @@ function displayEventDetails(events) {
         detailsDiv.style.opacity = '0';
         detailsDiv.style.transition = 'opacity 0.5s ease';
         detailsDiv.innerHTML = `
-      <h2>${event.name}</h2>
-      <p>Datum: ${event.date}</p>
-      <p>Lokacija: ${event.location}</p>
-      <p>Cena: ${event.price} RSD</p>
-      <p>Dostupno ulaznica: ${event.availableTickets}</p>
-      <a href="reservation.html?id=${event.id}">Rezerviši</a>
-    `;
+            <div class="event-detail-card">
+                <div class="event-detail-image">
+                    <img src="${event.image}" alt="${event.name}">
+                    <div class="event-category">${event.category}</div>
+                </div>
+                <div class="event-detail-content">
+                    <h2>${event.name}</h2>
+                    <p class="event-description">${event.description}</p>
+                    <div class="event-detail-info">
+                        <p><i class="icon-calendar"></i> ${formatDate(event.date)}</p>
+                        <p><i class="icon-location"></i> ${event.location}</p>
+                        <p class="price"><i class="icon-money"></i> ${event.price} RSD</p>
+                        <p class="tickets"><i class="icon-ticket"></i> ${event.availableTickets} dostupno</p>
+                    </div>
+                    <a href="reservation.html?id=${event.id}" class="btn-primary btn-large">Rezerviši</a>
+                </div>
+            </div>
+        `;
         setTimeout(() => {
             detailsDiv.style.opacity = '1';
         }, 100);

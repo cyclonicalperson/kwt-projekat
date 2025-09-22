@@ -5,7 +5,10 @@
     "date": "2025-10-15",
     "location": "Beograd Arena",
     "price": 2000,
-    "availableTickets": 100
+    "availableTickets": 100,
+    "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop&crop=faces",
+    "category": "Muzika",
+    "description": "Spektakularan rock koncert sa najboljim bendovima regiona"
   },
   {
     "id": 2,
@@ -13,7 +16,10 @@
     "date": "2025-11-05",
     "location": "Narodno Pozorište",
     "price": 1500,
-    "availableTickets": 50
+    "availableTickets": 50,
+    "image": "https://images.unsplash.com/photo-1507924538820-ede94a04019d?w=400&h=250&fit=crop&crop=faces",
+    "category": "Pozorište",
+    "description": "Klasična drama koja će vas oduševiti"
   },
   {
     "id": 3,
@@ -21,6 +27,64 @@
     "date": "2025-12-01",
     "location": "Stadion Rajko Mitić",
     "price": 1000,
-    "availableTickets": 200
+    "availableTickets": 200,
+    "image": "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=400&h=250&fit=crop&crop=faces",
+    "category": "Sport",
+    "description": "Derbi između najvećih rivala"
+  },
+  {
+    "id": 4,
+    "name": "Jazz Festival",
+    "date": "2025-10-28",
+    "location": "Dom Omladine",
+    "price": 2500,
+    "availableTickets": 80,
+    "image": "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=400&h=250&fit=crop&crop=faces",
+    "category": "Muzika",
+    "description": "Nezaboravan jazz spektakl sa svetskim umetnicima"
+  },
+  {
+    "id": 5,
+    "name": "Stand-up Komedija",
+    "date": "2025-11-15",
+    "location": "Kombank Dvorana",
+    "price": 1800,
+    "availableTickets": 120,
+    "image": "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=400&h=250&fit=crop&crop=faces",
+    "category": "Komedija",
+    "description": "Večer smeha sa najpoznatijim komičarima"
+  },
+  {
+    "id": 6,
+    "name": "Elektronska Muzika",
+    "date": "2025-12-15",
+    "location": "Hangar",
+    "price": 3000,
+    "availableTickets": 300,
+    "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=250&fit=crop&crop=faces",
+    "category": "Muzika",
+    "description": "Noć puna elektronskih bitova i nezaboravne atmosfere"
+  },
+  {
+    "id": 7,
+    "name": "Balet Labuđe Jezero",
+    "date": "2025-11-20",
+    "location": "Opera i Balet",
+    "price": 2200,
+    "availableTickets": 60,
+    "image": "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=400&h=250&fit=crop&crop=faces",
+    "category": "Balet",
+    "description": "Klasičan balet u izvođenju vrhunskih umetnika"
+  },
+  {
+    "id": 8,
+    "name": "Basket Liga",
+    "date": "2025-12-08",
+    "location": "Aleksandar Nikolić Hala",
+    "price": 800,
+    "availableTickets": 150,
+    "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&h=250&fit=crop&crop=faces",
+    "category": "Sport",
+    "description": "Uzbudljiva košarkaška utakmica domaćeg tima"
   }
 ]

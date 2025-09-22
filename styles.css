@@ -85,44 +85,174 @@ h1 {
 
 .event-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
 }
 
 .event-card {
-    background: #f9fafb;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.7s ease-in-out, box-shadow 0.7s ease-in-out, opacity 0.7s ease-in-out;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+    position: relative;
 }
 
 .event-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-    opacity: 0.95;
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
-.event-card h3 {
+.event-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover .event-image img {
+    transform: scale(1.05);
+}
+
+.event-category {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(30, 58, 138, 0.9);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.event-content {
+    padding: 20px;
+}
+
+.event-content h3 {
     color: #1e3a8a;
     margin-bottom: 10px;
-}
-
-.event-card p {
-    margin: 5px 0;
-}
-
-.event-card a {
-    display: inline-block;
-    margin-top: 10px;
-    color: #3b82f6;
-    text-decoration: none;
+    font-size: 1.3em;
     font-weight: 700;
 }
 
-.event-card a:hover {
-    text-decoration: underline;
+.event-description {
+    color: #6b7280;
+    margin-bottom: 15px;
+    font-size: 14px;
+    line-height: 1.5;
 }
+
+.event-details {
+    margin-bottom: 20px;
+}
+
+.event-details p {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.event-details .price {
+    color: #059669;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.event-details .tickets {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1e40af, #1e3a8a);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.btn-large {
+    padding: 15px 30px;
+    font-size: 16px;
+}
+
+/* Event details page styling */
+.event-detail-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.event-detail-image {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
+
+.event-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.event-detail-content {
+    padding: 30px;
+}
+
+.event-detail-content h2 {
+    color: #1e3a8a;
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+.event-detail-info {
+    margin: 20px 0;
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.event-detail-info p {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+/* Icon styling */
+.icon-calendar::before { content: "📅 "; margin-right: 8px; }
+.icon-location::before { content: "📍 "; margin-right: 8px; }
+.icon-money::before { content: "💰 "; margin-right: 8px; }
+.icon-ticket::before { content: "🎫 "; margin-right: 8px; }
 
 form {
     display: flex;
@@ -207,5 +337,39 @@ button:hover {
 
     .event-list {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .event-card {
+        margin-bottom: 20px;
+    }
+
+    .event-image {
+        height: 180px;
+    }
+
+    .event-content {
+        padding: 15px;
+    }
+
+    .event-content h3 {
+        font-size: 1.2em;
+    }
+
+    .event-detail-image {
+        height: 250px;
+    }
+
+    .event-detail-content {
+        padding: 20px;
+    }
+
+    .event-detail-content h2 {
+        font-size: 1.5em;
+    }
+
+    .btn-primary {
+        width: 100%;
+        text-align: center;
     }
 }
