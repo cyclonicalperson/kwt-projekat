@@ -1,25 +1,54 @@
+// Funkcija za prikaz modala
+function showModal(message, redirectUrl = null) {
+    let modal = document.getElementById('modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+      <div class="modal-content">
+        <p>${message}</p>
+        <button onclick="closeModal()">OK</button>
+      </div>
+    `;
+        document.body.appendChild(modal);
+    } else {
+        modal.querySelector('p').textContent = message;
+        modal.style.display = 'flex';
+    }
+    if (redirectUrl) {
+        modal.querySelector('button').onclick = () => {
+            closeModal();
+            window.location.href = redirectUrl;
+        };
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('modal');
+    if (modal) modal.style.display = 'none';
+}
+
 // Funkcije za login/logout
 function login(username, password) {
-    if (username === 'user' && password === 'pass') { // Hardcoded za demo
+    if (username === 'user' && password === 'pass') {
         localStorage.setItem('authToken', 'loggedIn');
-        alert('Uspešno ulogovani!');
-        window.location.href = 'index.html';
+        showModal('Uspešno ulogovani!', 'index.html');
     } else {
-        alert('Pogrešni kredencijali!');
+        showModal('Pogrešni kredencijali!');
     }
 }
 
 function logout() {
     localStorage.removeItem('authToken');
-    alert('Uspešno izlogovani!');
-    window.location.href = 'login.html';
+    showModal('Uspešno izlogovani!', 'login.html');
 }
 
 function isLoggedIn() {
     return localStorage.getItem('authToken') === 'loggedIn';
 }
 
-// AJAX za učitavanje događaja iz JSON
+// AJAX za učitavanje događaja
 function loadEvents(callback) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'events.json', true);
@@ -28,20 +57,22 @@ function loadEvents(callback) {
             const events = JSON.parse(xhr.responseText);
             callback(events);
         } else {
-            alert('Greška pri učitavanju događaja!');
+            showModal('Greška pri učitavanju događaja!');
         }
     };
     xhr.send();
 }
 
-// Prikaz liste događaja na početnoj
+// Prikaz liste događaja sa fade-in efektom
 function displayEvents(events) {
     const eventList = document.getElementById('event-list');
     if (eventList) {
         eventList.innerHTML = '';
-        events.forEach(event => {
+        events.forEach((event, index) => {
             const card = document.createElement('div');
             card.className = 'event-card';
+            card.style.opacity = '0';
+            card.style.transition = 'opacity 0.5s ease';
             card.innerHTML = `
         <h3>${event.name}</h3>
         <p>Datum: ${event.date}</p>
@@ -51,11 +82,14 @@ function displayEvents(events) {
         <a href="event-details.html?id=${event.id}">Detalji</a>
       `;
             eventList.appendChild(card);
+            setTimeout(() => {
+                card.style.opacity = '1';
+            }, index * 100); // Postepeni fade-in
         });
     }
 }
 
-// Dohvati event ID iz URL-a (za detalje)
+// Dohvati event ID iz URL-a
 function getEventIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return parseInt(params.get('id'));
@@ -67,6 +101,8 @@ function displayEventDetails(events) {
     const event = events.find(e => e.id === eventId);
     const detailsDiv = document.getElementById('event-details');
     if (detailsDiv && event) {
+        detailsDiv.style.opacity = '0';
+        detailsDiv.style.transition = 'opacity 0.5s ease';
         detailsDiv.innerHTML = `
       <h2>${event.name}</h2>
       <p>Datum: ${event.date}</p>
@@ -75,6 +111,9 @@ function displayEventDetails(events) {
       <p>Dostupno ulaznica: ${event.availableTickets}</p>
       <a href="reservation.html?id=${event.id}">Rezerviši</a>
     `;
+        setTimeout(() => {
+            detailsDiv.style.opacity = '1';
+        }, 100);
     } else {
         detailsDiv.innerHTML = '<p>Događaj nije pronađen!</p>';
     }
@@ -83,27 +122,23 @@ function displayEventDetails(events) {
 // Rezervacija
 function makeReservation(eventId, tickets) {
     if (!isLoggedIn()) {
-        alert('Morate biti ulogovani da rezervišete!');
-        window.location.href = 'login.html';
+        showModal('Morate biti ulogovani da rezervišete!', 'login.html');
         return;
     }
     if (tickets <= 0) {
-        alert('Broj ulaznica mora biti veći od 0!');
+        showModal('Broj ulaznica mora biti veći od 0!');
         return;
     }
 
-    // Simuliraj ažuriranje dostupnih ulaznica (u realnom bi bio server, ovde samo local)
     loadEvents(events => {
         const event = events.find(e => e.id === eventId);
         if (event && event.availableTickets >= tickets) {
-            // Sačuvaj rezervaciju u localStorage
             let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
             reservations.push({ eventId, eventName: event.name, tickets });
             localStorage.setItem('reservations', JSON.stringify(reservations));
-            alert(`Uspešno rezervisano ${tickets} ulaznica za ${event.name}!`);
-            window.location.href = 'profile.html';
+            showModal(`Uspešno rezervisano ${tickets} ulaznica za ${event.name}!`, 'profile.html');
         } else {
-            alert('Nedovoljno dostupnih ulaznica!');
+            showModal('Nedovoljno dostupnih ulaznica!');
         }
     });
 }
@@ -117,10 +152,16 @@ function displayReservations() {
         if (reservations.length === 0) {
             resList.innerHTML = '<p>Nema rezervacija.</p>';
         } else {
-            reservations.forEach(res => {
+            reservations.forEach((res, index) => {
                 const item = document.createElement('div');
+                item.className = 'event-card';
+                item.style.opacity = '0';
+                item.style.transition = 'opacity 0.5s ease';
                 item.innerHTML = `<p>${res.eventName} - ${res.tickets} ulaznica</p>`;
                 resList.appendChild(item);
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                }, index * 100);
             });
         }
     }
@@ -128,7 +169,7 @@ function displayReservations() {
 
 // Inicijalizacija po strani
 document.addEventListener('DOMContentLoaded', () => {
-    // Dodaj logout dugme ako je ulogovan
+    // Dinamički dodaj logout dugme ako je ulogovan
     const nav = document.querySelector('nav ul');
     if (nav && isLoggedIn()) {
         const logoutLi = document.createElement('li');
@@ -141,11 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Po strani
-    if (document.getElementById('event-list')) { // index.html
+    if (document.getElementById('event-list')) {
         loadEvents(displayEvents);
-    } else if (document.getElementById('event-details')) { // event-details.html
+    } else if (document.getElementById('event-details')) {
         loadEvents(displayEventDetails);
-    } else if (document.getElementById('reservation-form')) { // reservation.html
+    } else if (document.getElementById('reservation-form')) {
         if (!isLoggedIn()) {
             window.location.href = 'login.html';
         }
@@ -156,12 +197,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const tickets = parseInt(document.getElementById('tickets').value);
             makeReservation(eventId, tickets);
         };
-    } else if (document.getElementById('reservation-list')) { // profile.html
+    } else if (document.getElementById('reservation-list')) {
         if (!isLoggedIn()) {
             window.location.href = 'login.html';
         }
         displayReservations();
-    } else if (document.getElementById('login-form')) { // login.html
+    } else if (document.getElementById('login-form')) {
         const form = document.getElementById('login-form');
         form.onsubmit = (e) => {
             e.preventDefault();
