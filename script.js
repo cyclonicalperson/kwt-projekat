@@ -5,23 +5,40 @@ function showModal(message, redirectUrl = null) {
         modal = document.createElement('div');
         modal.id = 'modal';
         modal.className = 'modal';
-        modal.innerHTML = `
-      <div class="modal-content">
-        <p>${message}</p>
-        <button onclick="closeModal()">OK</button>
-      </div>
-    `;
         document.body.appendChild(modal);
-    } else {
-        modal.querySelector('p').textContent = message;
-        modal.style.display = 'flex';
     }
-    if (redirectUrl) {
-        modal.querySelector('button').onclick = () => {
-            closeModal();
-            window.location.href = redirectUrl;
-        };
+
+    modal.innerHTML = `
+        <div class="modal-content">
+            <p>${message}</p>
+            <button onclick="handleModalClose('${redirectUrl}')">OK</button>
+        </div>
+    `;
+    modal.style.display = 'flex';
+}
+
+function handleModalClose(redirectUrl) {
+    closeModal();
+    if (redirectUrl && redirectUrl !== 'null') {
+        window.location.href = redirectUrl;
     }
+}
+
+// Funkcija za prikaz custom modala bez OK dugmeta
+function showCustomModal(htmlContent) {
+    let modal = document.getElementById('modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modal';
+        modal.className = 'modal';
+        document.body.appendChild(modal);
+    }
+    modal.innerHTML = `
+        <div class="modal-content">
+            ${htmlContent}
+        </div>
+    `;
+    modal.style.display = 'flex';
 }
 
 function closeModal() {
@@ -159,7 +176,11 @@ function displayEventDetails(events) {
 }
 
 // Rezervacija
+let isReserving = false; // Globalni flag za rezervaciju
+
 function makeReservation(eventId, tickets) {
+    if (isReserving) return; // Spreči duplu rezervaciju
+
     if (!isLoggedIn()) {
         showModal('Morate biti ulogovani da rezervišete!', 'login.html');
         return;
@@ -169,14 +190,26 @@ function makeReservation(eventId, tickets) {
         return;
     }
 
+    isReserving = true; // Postavi flag
+
     loadEvents(events => {
         const event = events.find(e => e.id === eventId);
         if (event && event.availableTickets >= tickets) {
             let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
-            reservations.push({ eventId, eventName: event.name, tickets });
+            const newReservation = {
+                eventId,
+                eventName: event.name,
+                tickets,
+                reservationDate: new Date().toISOString().split('T')[0],
+                timestamp: Date.now()
+            };
+            reservations.push(newReservation);
             localStorage.setItem('reservations', JSON.stringify(reservations));
+
+            isReserving = false; // Resetuj flag
             showModal(`Uspešno rezervisano ${tickets} ulaznica za ${event.name}!`, 'profile.html');
         } else {
+            isReserving = false; // Resetuj flag
             showModal('Nedovoljno dostupnih ulaznica!');
         }
     });
@@ -189,21 +222,127 @@ function displayReservations() {
     if (resList) {
         resList.innerHTML = '';
         if (reservations.length === 0) {
-            resList.innerHTML = '<p>Nema rezervacija.</p>';
+            resList.innerHTML = `
+                <div class="empty-reservations">
+                    <div class="empty-icon">🎫</div>
+                    <h3>Nema rezervacija</h3>
+                    <p>Još uvek nemate rezervisanih događaja.</p>
+                    <a href="index.html" class="btn-primary">Pogledaj događaje</a>
+                </div>
+            `;
         } else {
-            reservations.forEach((res, index) => {
-                const item = document.createElement('div');
-                item.className = 'event-card';
-                item.style.opacity = '0';
-                item.style.transition = 'opacity 0.5s ease';
-                item.innerHTML = `<p>${res.eventName} - ${res.tickets} ulaznica</p>`;
-                resList.appendChild(item);
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                }, index * 100);
+            loadEvents(events => {
+                reservations.forEach((res, index) => {
+                    const event = events.find(e => e.id === res.eventId);
+                    if (event) {
+                        const item = document.createElement('div');
+                        item.className = 'reservation-card';
+                        item.style.opacity = '0';
+                        item.style.transition = 'opacity 0.5s ease';
+
+                        const totalPrice = event.price * res.tickets;
+                        const reservationDate = res.reservationDate || new Date().toISOString().split('T')[0];
+
+                        item.innerHTML = `
+                            <div class="reservation-image">
+                                <img src="${event.image}" alt="${event.name}" loading="lazy">
+                                <div class="reservation-status">Rezervisano</div>
+                            </div>
+                            <div class="reservation-content">
+                                <div class="reservation-header">
+                                    <h3>${event.name}</h3>
+                                    <span class="reservation-id">#${res.eventId}${index.toString().padStart(3, '0')}</span>
+                                </div>
+                                <p class="reservation-description">${event.description}</p>
+                                <div class="reservation-details">
+                                    <div class="detail-row">
+                                        <span class="detail-label"><i class="icon-calendar"></i> Datum događaja:</span>
+                                        <span class="detail-value">${formatDate(event.date)}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label"><i class="icon-location"></i> Lokacija:</span>
+                                        <span class="detail-value">${event.location}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label"><i class="icon-ticket"></i> Broj ulaznica:</span>
+                                        <span class="detail-value highlight">${res.tickets}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label"><i class="icon-money"></i> Ukupna cena:</span>
+                                        <span class="detail-value price">${totalPrice} RSD</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">🗓️ Rezervisano:</span>
+                                        <span class="detail-value">${formatDate(reservationDate)}</span>
+                                    </div>
+                                </div>
+                                <div class="reservation-actions">
+                                    <button class="btn-danger" onclick="cancelReservation(${index})">
+                                        ❌ Otkaži rezervaciju
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        resList.appendChild(item);
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                        }, index * 100);
+                    }
+                });
             });
         }
     }
+}
+
+// Otkazivanje rezervacije
+function cancelReservation(reservationIndex) {
+    const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const reservation = reservations[reservationIndex];
+
+    if (!reservation) return;
+
+    // Potvrdi otkazivanje
+    const confirmHTML = `
+        <div class="cancel-confirmation">
+            <div class="warning-icon">⚠️</div>
+            <h3>Potvrdi otkazivanje</h3>
+            <p>Da li ste sigurni da želite da otkažete rezervaciju za <strong>${reservation.eventName}</strong>?</p>
+            <p class="warning-text">Ova akcija se ne može poništiti.</p>
+            <div class="confirmation-actions">
+                <button class="btn-secondary" onclick="closeModal()">Odustani</button>
+                <button class="btn-danger" onclick="confirmCancelReservation(${reservationIndex})">Da, otkaži</button>
+            </div>
+        </div>
+    `;
+
+    showCustomModal(confirmHTML);
+}
+
+// Potvrdi otkazivanje rezervacije
+function confirmCancelReservation(reservationIndex) {
+    let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const canceledReservation = reservations[reservationIndex];
+
+    // Ukloni rezervaciju
+    reservations.splice(reservationIndex, 1);
+    localStorage.setItem('reservations', JSON.stringify(reservations));
+
+    // Prikaži poruku o uspešnom otkazivanju
+    const successHTML = `
+        <div class="cancellation-success">
+            <div class="success-icon">✅</div>
+            <h3>Rezervacija je otkazana</h3>
+            <p>Uspešno ste otkazali rezervaciju za <strong>${canceledReservation.eventName}</strong>.</p>
+        </div>
+    `;
+
+    showCustomModal(successHTML);
+
+    // Automatski zatvori modal i osvezi stranicu nakon 2 sekunde
+    setTimeout(() => {
+        closeModal();
+        window.location.reload();
+    }, 2000);
 }
 
 // Dinamičko upravljanje navigacijom
@@ -256,11 +395,24 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'login.html';
         }
         const form = document.getElementById('reservation-form');
+        let formSubmitted = false; // Lokalni flag za formu
+
         form.onsubmit = (e) => {
             e.preventDefault();
+
+            if (formSubmitted) return false; // Spreči dupli submit
+            formSubmitted = true;
+
             const eventId = getEventIdFromUrl();
             const tickets = parseInt(document.getElementById('tickets').value);
             makeReservation(eventId, tickets);
+
+            // Resetuj flag nakon 3 sekunde
+            setTimeout(() => {
+                formSubmitted = false;
+            }, 3000);
+
+            return false;
         };
     } else if (document.getElementById('reservation-list')) {
         if (!isLoggedIn()) {
