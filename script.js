@@ -74,15 +74,11 @@ function loadEvents(callback) {
             const events = JSON.parse(xhr.responseText);
             callback(events);
         } else {
-            // Fallback na mock podatke ako events.json nije dostupan
-            console.warn('events.json nije dostupan, koriste se mock podaci');
-            callback(eventsData);
+            showModal('Greška pri učitavanju događaja!');
         }
     };
     xhr.onerror = function() {
-        // Fallback na mock podatke u slučaju greške
-        console.warn('AJAX greška, koriste se mock podaci');
-        callback(eventsData);
+        showModal('Greška pri učitavanju događaja!');
     };
     xhr.send();
 }

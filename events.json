@@ -1,20 +1,20 @@
 [
   {
     "id": 1,
-    "name": "Koncert Rok Benda",
+    "name": "Muzicki koncert",
     "date": "2025-10-15",
     "location": "Beograd Arena",
     "price": 2000,
     "availableTickets": 100,
     "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop&crop=faces",
     "category": "Muzika",
-    "description": "Spektakularan rock koncert sa najboljim bendovima regiona"
+    "description": "Spektakularan koncert sa najboljim bendovima regiona"
   },
   {
     "id": 2,
-    "name": "Pozorišna Predstava",
+    "name": "Pozorišna predstava",
     "date": "2025-11-05",
-    "location": "Narodno Pozorište",
+    "location": "Narodno pozorište Beograd",
     "price": 1500,
     "availableTickets": 50,
     "image": "https://images.unsplash.com/photo-1507924538820-ede94a04019d?w=400&h=250&fit=crop&crop=faces",
@@ -23,9 +23,9 @@
   },
   {
     "id": 3,
-    "name": "Fudbalska Utakmica",
+    "name": "Fudbalska utakmica",
     "date": "2025-12-01",
-    "location": "Stadion Rajko Mitić",
+    "location": "Stadion Čika Dača",
     "price": 1000,
     "availableTickets": 200,
     "image": "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=400&h=250&fit=crop&crop=faces",
@@ -36,38 +36,38 @@
     "id": 4,
     "name": "Jazz Festival",
     "date": "2025-10-28",
-    "location": "Dom Omladine",
-    "price": 2500,
+    "location": "Dom omladine Kragujevac",
+    "price": 500,
     "availableTickets": 80,
     "image": "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=400&h=250&fit=crop&crop=faces",
     "category": "Muzika",
-    "description": "Nezaboravan jazz spektakl sa svetskim umetnicima"
+    "description": "Nezaboravan jazz sa lokalnim umetnicima"
   },
   {
     "id": 5,
-    "name": "Stand-up Komedija",
+    "name": "Sajam automobila",
     "date": "2025-11-15",
-    "location": "Kombank Dvorana",
+    "location": "Bulevar vojvode Mišića 14",
     "price": 1800,
     "availableTickets": 120,
-    "image": "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=400&h=250&fit=crop&crop=faces",
-    "category": "Komedija",
-    "description": "Večer smeha sa najpoznatijim komičarima"
+    "image": "https://sajamautomobila.rs/wp-content/uploads/2025/03/msa2025_6495-1024x682.jpg",
+    "category": "Sajam",
+    "description": "Najveći sajam automobila na Balkanu"
   },
   {
     "id": 6,
-    "name": "Elektronska Muzika",
+    "name": "Elektronska muzika",
     "date": "2025-12-15",
     "location": "Hangar",
     "price": 3000,
     "availableTickets": 300,
     "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=250&fit=crop&crop=faces",
     "category": "Muzika",
-    "description": "Noć puna elektronskih bitova i nezaboravne atmosfere"
+    "description": "Noć puna elektronskih beat-ova i nezaboravne atmosfere"
   },
   {
     "id": 7,
-    "name": "Balet Labuđe Jezero",
+    "name": "Balet",
     "date": "2025-11-20",
     "location": "Opera i Balet",
     "price": 2200,
