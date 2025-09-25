@@ -13,7 +13,7 @@ body {
     line-height: 1.6;
 }
 
-/* Navigacija */
+/* Navigation */
 nav {
     background: linear-gradient(to right, #1e3a8a, #3b82f6);
     padding: 15px 0;
@@ -31,13 +31,17 @@ nav a, nav button#logout-btn {
     color: white;
     text-decoration: none;
     font-weight: 700;
-    padding: 8px 16px;
+    padding: 10px 20px;
     transition: all 0.3s ease;
     border-radius: 5px;
     font-size: 16px;
     border: none;
     background: none;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
 }
 
 nav a:hover, nav button#logout-btn:hover {
@@ -69,7 +73,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Grid dogadjaja */
+/* Event Grid */
 .event-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -83,6 +87,9 @@ h1 {
     overflow: hidden;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .event-card:hover {
@@ -122,6 +129,18 @@ h1 {
 
 .event-content {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.event-details {
+    margin-bottom: auto;
+}
+
+.event-content .btn-primary {
+    margin-top: auto;
+    align-self: flex-start;
 }
 
 .event-content h3 {
@@ -141,6 +160,9 @@ h1 {
     margin: 8px 0;
     font-size: 14px;
     color: #4b5563;
+    display: flex;
+    align-items: center;
+    line-height: 1.4;
 }
 
 .event-details .price {
@@ -154,7 +176,7 @@ h1 {
     font-weight: 600;
 }
 
-/* Dugmici */
+/* Buttons */
 .btn-primary {
     display: inline-block;
     background: linear-gradient(135deg, #3b82f6, #1e40af);
@@ -217,7 +239,7 @@ h1 {
     box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
 }
 
-/* Forme */
+/* Forms */
 form {
     display: flex;
     flex-direction: column;
@@ -254,7 +276,7 @@ button:hover {
     transform: scale(1.05);
 }
 
-/* Detalji dogadjaja */
+/* Event Details */
 .event-detail-card {
     background: white;
     border-radius: 15px;
@@ -296,9 +318,12 @@ button:hover {
 .event-detail-info p {
     margin: 10px 0;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    line-height: 1.4;
 }
 
-/* Rezervacije */
+/* Reservations */
 .reservation-card {
     background: white;
     border-radius: 15px;
@@ -399,6 +424,9 @@ button:hover {
     font-weight: 600;
     color: #4b5563;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    line-height: 1.4;
 }
 
 .detail-value {
@@ -449,7 +477,7 @@ button:hover {
     margin-bottom: 25px;
 }
 
-/* Modali */
+/* Modals */
 .modal {
     display: none;
     position: fixed;
@@ -515,13 +543,48 @@ button:hover {
     text-align: center;
 }
 
-/* Ikone */
-.icon-calendar::before { content: "📅 "; margin-right: 8px; }
-.icon-location::before { content: "📍 "; margin-right: 8px; }
-.icon-money::before { content: "💰 "; margin-right: 8px; }
-.icon-ticket::before { content: "🎫 "; margin-right: 8px; }
+/* Icons */
+.icon-calendar::before {
+    content: "📅";
+    margin-right: 8px;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-block;
+    width: 18px;
+    text-align: center;
+}
 
-/* Mobilni styling */
+.icon-location::before {
+    content: "📍";
+    margin-right: 8px;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-block;
+    width: 18px;
+    text-align: center;
+}
+
+.icon-money::before {
+    content: "💰";
+    margin-right: 8px;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-block;
+    width: 18px;
+    text-align: center;
+}
+
+.icon-ticket::before {
+    content: "🎫";
+    margin-right: 8px;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-block;
+    width: 18px;
+    text-align: center;
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
     nav ul {
         flex-direction: column;
